@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earnest Pet Loans — Care for Your Pet, Not Your Wallet</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #1a7f6e;
+      --teal-light: #e6f5f2;
+      --teal-dark: #145f53;
+      --coral: #f4623a;
+      --coral-light: #fff1ec;
+      --navy: #1c2b3a;
+      --gray: #6b7280;
+      --gray-light: #f9fafb;
+      --white: #ffffff;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--navy);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 5%;
+      background: var(--white);
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--coral); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+    nav ul a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--teal); }
+    .nav-cta {
+      background: var(--teal);
+      color: var(--white) !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--teal-dark) !important; color: var(--white) !important; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #e6f5f2 0%, #fff1ec 100%);
+      padding: 6rem 5% 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--teal-light);
+      color: var(--teal);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.3px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--teal);
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--gray);
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .btn-secondary {
+      color: var(--teal);
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s;
+    }
+    .btn-secondary:hover { gap: 0.7rem; }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .pet-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 360px;
+    }
+    .pet-emoji {
+      font-size: 5rem;
+      display: block;
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .pet-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: var(--navy);
+    }
+    .rate-display {
+      background: var(--teal-light);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .rate-display .big-rate {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .rate-display .rate-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-top: 0.3rem;
+    }
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-top: 1px solid #f0f0f0;
+      font-size: 0.875rem;
+    }
+    .card-row .label { color: var(--gray); }
+    .card-row .value { font-weight: 600; }
+
+    /* TRUST BAR */
+    .trust-bar {
+      background: var(--navy);
+      color: var(--white);
+      padding: 1.25rem 5%;
+      display: flex;
+      justify-content: center;
+      gap: 3.5rem;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+    }
+    .trust-item .icon { font-size: 1.1rem; }
+    .trust-item strong { font-weight: 700; }
+
+    /* SECTION */
+    section {
+      padding: 5rem 5%;
+    }
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--gray);
+      max-width: 560px;
+    }
+    .section-header { margin-bottom: 3rem; }
+
+    /* HOW IT WORKS */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .step-card {
+      background: var(--gray-light);
+      border-radius: var(--radius);
+      padding: 2rem;
+      position: relative;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      background: var(--teal);
+      color: var(--white);
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .step-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .step-card p { font-size: 0.9rem; color: var(--gray); }
+
+    /* COVERAGE */
+    .coverage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+    .coverage-card {
+      border: 1.5px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .coverage-card:hover {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-light);
+    }
+    .coverage-icon { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
+    .coverage-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .coverage-card p { font-size: 0.82rem; color: var(--gray); }
+
+    /* RATES */
+    .rates-section { background: var(--gray-light); }
+    .rates-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .rate-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      border: 1.5px solid #e5e7eb;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .rate-card.featured {
+      border-color: var(--teal);
+      position: relative;
+    }
+    .rate-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -0.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--teal);
+      color: var(--white);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.85rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .rate-card:hover { transform: translateY(-3px); }
+    .rate-amount {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 0.25rem;
+    }
+    .rate-range {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-bottom: 1.25rem;
+    }
+    .rate-apr {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 0.25rem;
+    }
+    .rate-apr-label { font-size: 0.78rem; color: var(--gray); margin-bottom: 1.5rem; }
+    .rate-features {
+      list-style: none;
+      font-size: 0.85rem;
+      color: var(--gray);
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+    .rate-features li {
+      padding: 0.4rem 0;
+      border-top: 1px solid #f0f0f0;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .rate-features li::before { content: '✓'; color: var(--teal); font-weight: 700; }
+
+    /* TESTIMONIALS */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .testimonial {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+    }
+    .stars { color: #f59e0b; margin-bottom: 0.75rem; font-size: 0.9rem; }
+    .testimonial p {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .reviewer-name { font-size: 0.875rem; font-weight: 700; }
+    .reviewer-pet { font-size: 0.78rem; color: var(--gray); }
+
+    /* FAQ */
+    .faq-list { max-width: 720px; }
+    .faq-item {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1.25rem 0;
+    }
+    .faq-q {
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      user-select: none;
+    }
+    .faq-q::after {
+      content: '+';
+      font-size: 1.4rem;
+      color: var(--teal);
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      font-size: 0.9rem;
+      color: var(--gray);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.2s;
+    }
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding-top: 0.75rem;
+    }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 5rem 5%;
+    }
+    .cta-banner h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+    .cta-banner p {
+      font-size: 1.05rem;
+      opacity: 0.85;
+      margin-bottom: 2rem;
+    }
+    .btn-white {
+      background: var(--white);
+      color: var(--teal);
+      padding: 0.9rem 2.25rem;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+    .cta-fine {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      opacity: 0.65;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      color: #9ca3af;
+      padding: 3rem 5%;
+      font-size: 0.82rem;
+      text-align: center;
+    }
+    footer a { color: #9ca3af; text-decoration: underline; }
+    .footer-logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .disclaimer {
+      max-width: 720px;
+      margin: 1.5rem auto 0;
+      line-height: 1.5;
+      opacity: 0.6;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero h1 { font-size: 2.25rem; }
+      .how-grid, .rates-grid, .testimonials-grid { grid-template-columns: 1fr; }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">earnest<span>.</span></div>
+  <ul>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#rates">Rates</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#apply" class="nav-cta">Check your rate</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <span class="hero-badge">Pet Loans — Now Available</span>
+    <h1>Your pet deserves the best care.<br><em>No matter the cost.</em></h1>
+    <p>Get a personal loan tailored for veterinary expenses. Competitive rates, flexible terms, and a decision in minutes — so you can focus on what matters.</p>
+    <div class="hero-actions">
+      <a href="#apply" class="btn-primary">Check my rate</a>
+      <a href="#how" class="btn-secondary">See how it works &#8594;</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="pet-card">
+      <span class="pet-emoji">🐾</span>
+      <h3>Estimated Monthly Payment</h3>
+      <div class="rate-display">
+        <div class="big-rate">$187<span style="font-size:1.2rem">/mo</span></div>
+        <div class="rate-label">on a $5,000 loan at 8.99% APR</div>
+      </div>
+      <div class="card-row">
+        <span class="label">Loan amount</span>
+        <span class="value">$1,000 – $50,000</span>
+      </div>
+      <div class="card-row">
+        <span class="label">APR range</span>
+        <span class="value">6.99% – 24.99%</span>
+      </div>
+      <div class="card-row">
+        <span class="label">Terms</span>
+        <span class="value">12 – 60 months</span>
+      </div>
+      <div class="card-row">
+        <span class="label">No prepayment penalty</span>
+        <span class="value" style="color: var(--teal)">&#10003;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="icon">&#9733;</span> <strong>4.8/5</strong>&nbsp;from 12,000+ borrowers</div>
+  <div class="trust-item"><span class="icon">&#128274;</span> <strong>No hard credit pull</strong>&nbsp;to check your rate</div>
+  <div class="trust-item"><span class="icon">&#9889;</span> <strong>Same-day funding</strong>&nbsp;available</div>
+  <div class="trust-item"><span class="icon">&#128176;</span> <strong>No origination fees</strong>&nbsp;ever</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-header">
+    <p class="section-label">The process</p>
+    <h2 class="section-title">From application to vet visit in 3 steps</h2>
+    <p class="section-sub">We've made the loan process as painless as a routine check-up.</p>
+  </div>
+  <div class="how-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>Check your rate in 2 minutes</h3>
+      <p>Fill out a short form. We do a soft credit check — zero impact to your credit score. See personalized rates instantly.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h3>Pick the terms that fit your budget</h3>
+      <p>Choose from multiple loan amounts and repayment periods. Adjust to find a monthly payment that works for you.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h3>Funds arrive — your pet gets care</h3>
+      <p>Once approved, funds are deposited directly to your bank account — often the same day. Pay your vet directly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section id="coverage" style="background: var(--teal-light);">
+  <div class="section-header">
+    <p class="section-label">What's covered</p>
+    <h2 class="section-title">Use it for any pet-related expense</h2>
+    <p class="section-sub">Unlike pet insurance, there are no exclusions or pre-approval requirements for specific procedures.</p>
+  </div>
+  <div class="coverage-grid">
+    <div class="coverage-card">
+      <span class="coverage-icon">🏥</span>
+      <h4>Emergency surgery</h4>
+      <p>Accidents happen. Cover unexpected surgeries without wiping out savings.</p>
+    </div>
+    <div class="coverage-card">
+      <span class="coverage-icon">💉</span>
+      <h4>Diagnostics & labs</h4>
+      <p>MRIs, ultrasounds, blood panels — get the answers your vet needs.</p>
+    </div>
+    <div class="coverage-card">
+      <span class="coverage-icon">💊</span>
+      <h4>Medications</h4>
+      <p>Cover long-term prescriptions or costly specialty drugs.</p>
+    </div>
+    <div class="coverage-card">
+      <span class="coverage-icon">🦷</span>
+      <h4>Dental care</h4>
+      <p>Cleanings, extractions, and dental surgery for a healthy smile.</p>
+    </div>
+    <div class="coverage-card">
+      <span class="coverage-icon">🩺</span>
+      <h4>Wellness & prevention</h4>
+      <p>Vaccines, spay/neuter, heartworm prevention, and annual check-ups.</p>
+    </div>
+    <div class="coverage-card">
+      <span class="coverage-icon">🐾</span>
+      <h4>Specialized treatment</h4>
+      <p>Oncology, orthopedics, cardiology, and specialist referrals.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RATES -->
+<section id="rates" class="rates-section">
+  <div class="section-header">
+    <p class="section-label">Loan options</p>
+    <h2 class="section-title">Simple, transparent pricing</h2>
+    <p class="section-sub">No origination fees. No prepayment penalties. No surprises.</p>
+  </div>
+  <div class="rates-grid">
+    <div class="rate-card">
+      <div class="rate-amount">$1K – $5K</div>
+      <div class="rate-range">Routine & preventive care</div>
+      <div class="rate-apr">From 6.99% APR</div>
+      <div class="rate-apr-label">Based on creditworthiness</div>
+      <ul class="rate-features">
+        <li>12 – 36 month terms</li>
+        <li>Same-day decisions</li>
+        <li>No origination fee</li>
+        <li>AutoPay discount available</li>
+      </ul>
+      <a href="#apply" class="btn-primary" style="display:block; text-align:center;">Check my rate</a>
+    </div>
+    <div class="rate-card featured">
+      <div class="rate-amount">$5K – $20K</div>
+      <div class="rate-range">Surgery & specialist care</div>
+      <div class="rate-apr">From 8.99% APR</div>
+      <div class="rate-apr-label">Based on creditworthiness</div>
+      <ul class="rate-features">
+        <li>24 – 60 month terms</li>
+        <li>Same-day funding</li>
+        <li>No origination fee</li>
+        <li>AutoPay discount available</li>
+      </ul>
+      <a href="#apply" class="btn-primary" style="display:block; text-align:center;">Check my rate</a>
+    </div>
+    <div class="rate-card">
+      <div class="rate-amount">$20K – $50K</div>
+      <div class="rate-range">Advanced & long-term care</div>
+      <div class="rate-apr">From 11.99% APR</div>
+      <div class="rate-apr-label">Based on creditworthiness</div>
+      <ul class="rate-features">
+        <li>36 – 60 month terms</li>
+        <li>1–2 business day funding</li>
+        <li>No origination fee</li>
+        <li>AutoPay discount available</li>
+      </ul>
+      <a href="#apply" class="btn-primary" style="display:block; text-align:center;">Check my rate</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="section-header">
+    <p class="section-label">Borrower stories</p>
+    <h2 class="section-title">Pet parents love Earnest</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p>"My dog Max needed emergency ACL surgery at 2am. I applied on my phone in the parking lot, got approved in 10 minutes, and the vet confirmed payment the next morning. Lifesaver."</p>
+      <div class="reviewer">
+        <div class="avatar">&#128054;</div>
+        <div>
+          <div class="reviewer-name">Jordan M.</div>
+          <div class="reviewer-pet">Max, 4-yr Labrador</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p>"The rate I got was way better than my vet's in-house financing. I used Earnest for my cat's cancer treatment and am so glad I had this option. Clear terms, no hidden fees."</p>
+      <div class="reviewer">
+        <div class="avatar">&#128008;</div>
+        <div>
+          <div class="reviewer-name">Priya K.</div>
+          <div class="reviewer-pet">Luna, 9-yr Siamese</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p>"I loved that checking my rate didn't hurt my credit. I compared three options and Earnest came out ahead on both rate and customer service. Would 100% use again."</p>
+      <div class="reviewer">
+        <div class="avatar">&#128048;</div>
+        <div>
+          <div class="reviewer-name">Alex T.</div>
+          <div class="reviewer-pet">Pepper, 2-yr French Bulldog</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background: var(--gray-light);">
+  <div class="section-header">
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title">Common questions</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Will checking my rate affect my credit score?</div>
+      <div class="faq-a">No. We use a soft credit inquiry to show you your personalized rates, which has no impact on your credit score. A hard inquiry only occurs when you formally submit an application.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How quickly can I get the money?</div>
+      <div class="faq-a">Same-day funding is available for loans approved before 4pm ET on business days. Most borrowers receive funds within 1 business day after final approval.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What credit score do I need to qualify?</div>
+      <div class="faq-a">We look at more than just your credit score — we consider your full financial picture. Generally, a credit score of 650+ improves your chances of qualifying for our best rates.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Are there any fees?</div>
+      <div class="faq-a">None. We charge no origination fees, no prepayment penalties, and no application fees. The APR you see is the APR you pay — nothing hidden.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I pay off my loan early?</div>
+      <div class="faq-a">Absolutely, and we won't charge you a penny for it. Pay off your loan early and you'll only pay interest for the time you actually held the loan.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do I need to show proof of veterinary expenses?</div>
+      <div class="faq-a">No. Earnest Pet Loans are personal loans deposited directly to your bank account. You choose how to use the funds — no receipts or vet invoices required.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner" id="apply">
+  <h2>Check your rate in 2 minutes — no credit impact.</h2>
+  <p>Join thousands of pet parents who trusted Earnest when their pet needed them most.</p>
+  <a href="#" class="btn-white">Get started today</a>
+  <p class="cta-fine">Checking your rate won't affect your credit score. &nbsp;|&nbsp; Loans from $1,000 to $50,000 &nbsp;|&nbsp; 6.99% – 24.99% APR</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">earnest.</div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">Licenses</a>
+    <a href="#">Contact Us</a>
+    <a href="#">Accessibility</a>
+  </div>
+  <p>&copy; 2026 Earnest Operations LLC. All rights reserved.</p>
+  <p class="disclaimer">
+    This page is a prototype for internal testing purposes only and does not constitute a loan offer.
+    Earnest Operations LLC, NMLS #1204917. Loans are made or arranged pursuant to a California Financing Law License.
+    APR ranges are illustrative and subject to creditworthiness. Not available in all states.
+  </p>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
