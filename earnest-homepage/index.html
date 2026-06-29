@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earnest — Student Loan Refinancing, Personal Loans & More</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:        #1a7f6e;
+      --teal-mid:    #158573;
+      --teal-dark:   #0f5e52;
+      --teal-light:  #e6f5f2;
+      --coral:       #f4623a;
+      --coral-light: #fff1ec;
+      --navy:        #0e1f2e;
+      --navy-mid:    #1c2b3a;
+      --gray:        #6b7280;
+      --gray-light:  #f4f6f8;
+      --border:      #e5e7eb;
+      --white:       #ffffff;
+      --radius-sm:   8px;
+      --radius:      14px;
+      --radius-lg:   22px;
+      --shadow-sm:   0 2px 8px rgba(0,0,0,0.07);
+      --shadow:      0 6px 28px rgba(0,0,0,0.10);
+      --shadow-lg:   0 16px 48px rgba(0,0,0,0.14);
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); color: var(--navy); background: var(--white); line-height: 1.6; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo img { height: 30px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+    .nav-links a {
+      text-decoration: none; color: var(--gray);
+      font-size: 0.875rem; font-weight: 500;
+      padding: 0.45rem 0.85rem; border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--navy); background: var(--gray-light); }
+    .nav-links a.active { color: var(--teal); font-weight: 600; }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .btn-ghost {
+      font-size: 0.875rem; font-weight: 600; color: var(--navy);
+      text-decoration: none; padding: 0.45rem 1rem;
+      border-radius: var(--radius-sm); transition: background 0.15s;
+    }
+    .btn-ghost:hover { background: var(--gray-light); }
+    .btn-nav {
+      background: var(--teal); color: var(--white);
+      font-size: 0.875rem; font-weight: 600;
+      padding: 0.5rem 1.25rem; border-radius: var(--radius-sm);
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-nav:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: linear-gradient(160deg, #0a1929 0%, #0f2d3e 40%, #0d3a30 100%);
+      padding: 80px 5% 90px;
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      gap: 4rem;
+      align-items: center;
+      min-height: calc(100vh - 68px);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 70% at 70% 50%, rgba(26,127,110,0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 50% at 20% 80%, rgba(244,98,58,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-text { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(26,127,110,0.25); border: 1px solid rgba(26,127,110,0.4);
+      color: #6ee7da; font-size: 0.78rem; font-weight: 600;
+      padding: 0.35rem 0.9rem; border-radius: 20px;
+      margin-bottom: 1.5rem; letter-spacing: 0.3px;
+    }
+    .hero-eyebrow .dot { width: 6px; height: 6px; background: #6ee7da; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -1.5px; color: var(--white);
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 .hl { color: #6ee7da; }
+    .hero-sub {
+      font-size: 1.1rem; color: rgba(255,255,255,0.65);
+      max-width: 500px; margin-bottom: 2.5rem; line-height: 1.7;
+    }
+    .hero-stats {
+      display: flex; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .hero-stat .number {
+      font-size: 1.6rem; font-weight: 800; color: var(--white);
+      letter-spacing: -0.5px; line-height: 1;
+    }
+    .hero-stat .label { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 0.25rem; }
+
+    /* ─── RATE CHECK WIDGET ─── */
+    .rate-widget {
+      position: relative; z-index: 1;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .widget-header {
+      background: var(--teal);
+      padding: 1.25rem 1.75rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .widget-header h3 { color: var(--white); font-size: 1rem; font-weight: 700; }
+    .widget-badge {
+      background: rgba(255,255,255,0.2);
+      color: var(--white); font-size: 0.72rem; font-weight: 600;
+      padding: 0.2rem 0.65rem; border-radius: 20px;
+    }
+    .widget-steps {
+      display: flex; border-bottom: 1px solid var(--border);
+    }
+    .widget-step {
+      flex: 1; padding: 0.85rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+      cursor: pointer; transition: background 0.15s;
+      border-bottom: 2px solid transparent;
+    }
+    .widget-step:hover { background: var(--gray-light); }
+    .widget-step.active { border-bottom-color: var(--teal); }
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--border); color: var(--gray);
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .widget-step.active .step-num, .widget-step.done .step-num {
+      background: var(--teal); color: var(--white);
+    }
+    .widget-step.done .step-num::after { content: '✓'; }
+    .widget-step.done .step-num span { display: none; }
+    .step-label { font-size: 0.7rem; color: var(--gray); font-weight: 500; text-align: center; }
+    .widget-step.active .step-label { color: var(--teal); font-weight: 600; }
+
+    .widget-body { padding: 1.5rem 1.75rem; }
+    .widget-panel { display: none; }
+    .widget-panel.active { display: block; }
+
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--navy); margin-bottom: 0.4rem;
+    }
+    .form-input, .form-select {
+      width: 100%; padding: 0.7rem 1rem;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-size: 0.9rem; color: var(--navy);
+      font-family: var(--font);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background: var(--white); appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none; border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(26,127,110,0.12);
+    }
+    .form-input.error { border-color: #ef4444; }
+    .form-error { font-size: 0.72rem; color: #ef4444; margin-top: 0.3rem; display: none; }
+    .form-error.show { display: block; }
+    .form-hint { font-size: 0.72rem; color: var(--gray); margin-top: 0.3rem; }
+
+    .input-prefix-wrap { position: relative; }
+    .input-prefix {
+      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+      font-size: 0.9rem; color: var(--gray); font-weight: 500; pointer-events: none;
+    }
+    .input-prefix-wrap .form-input { padding-left: 1.75rem; }
+
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾'; position: absolute; right: 1rem; top: 50%;
+      transform: translateY(-50%); pointer-events: none;
+      font-size: 0.85rem; color: var(--gray);
+    }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+    .range-wrap { padding: 0.5rem 0; }
+    .range-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--gray); margin-bottom: 0.4rem; }
+    .range-val { font-weight: 700; color: var(--teal); }
+    input[type=range] {
+      width: 100%; height: 4px; border-radius: 2px;
+      background: linear-gradient(to right, var(--teal) 0%, var(--teal) 50%, var(--border) 50%, var(--border) 100%);
+      appearance: none; -webkit-appearance: none; cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none; width: 18px; height: 18px;
+      border-radius: 50%; background: var(--teal);
+      border: 2px solid var(--white); box-shadow: 0 1px 4px rgba(0,0,0,0.2); cursor: pointer;
+    }
+
+    .btn-full {
+      width: 100%; padding: 0.85rem;
+      background: var(--teal); color: var(--white);
+      border: none; border-radius: var(--radius-sm);
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: background 0.15s, transform 0.1s;
+      font-family: var(--font);
+    }
+    .btn-full:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+    .widget-trust {
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.85rem 1.75rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem; color: var(--gray);
+      background: var(--gray-light);
+    }
+    .widget-trust svg { width: 13px; height: 13px; fill: var(--gray); }
+
+    /* Results panel */
+    .results-panel { display: none; padding: 1.5rem 1.75rem; }
+    .results-panel.show { display: block; }
+    .results-header { text-align: center; margin-bottom: 1.25rem; }
+    .results-header .big-rate { font-size: 2.8rem; font-weight: 800; color: var(--teal); line-height: 1; }
+    .results-header .big-rate-label { font-size: 0.78rem; color: var(--gray); margin-top: 0.25rem; }
+    .results-breakdown {
+      background: var(--teal-light); border-radius: var(--radius-sm);
+      padding: 1rem; margin-bottom: 1rem;
+    }
+    .results-row {
+      display: flex; justify-content: space-between;
+      font-size: 0.82rem; padding: 0.3rem 0;
+    }
+    .results-row .r-label { color: var(--gray); }
+    .results-row .r-val { font-weight: 700; }
+    .results-row .r-val.savings { color: var(--teal); }
+    .savings-callout {
+      background: var(--teal); color: var(--white);
+      border-radius: var(--radius-sm); padding: 0.85rem 1rem;
+      text-align: center; margin-bottom: 1rem;
+    }
+    .savings-callout .s-amount { font-size: 1.5rem; font-weight: 800; }
+    .savings-callout .s-label { font-size: 0.75rem; opacity: 0.85; }
+    .results-disclaimer { font-size: 0.68rem; color: var(--gray); text-align: center; margin-bottom: 1rem; }
+    .btn-full-coral {
+      width: 100%; padding: 0.85rem;
+      background: var(--coral); color: var(--white);
+      border: none; border-radius: var(--radius-sm);
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: background 0.15s, transform 0.1s;
+      font-family: var(--font);
+    }
+    .btn-full-coral:hover { background: #d94e28; transform: translateY(-1px); }
+    .btn-outline {
+      width: 100%; padding: 0.75rem;
+      background: transparent; color: var(--teal);
+      border: 1.5px solid var(--teal); border-radius: var(--radius-sm);
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; margin-top: 0.6rem;
+      font-family: var(--font); transition: background 0.15s;
+    }
+    .btn-outline:hover { background: var(--teal-light); }
+
+    /* ─── PRODUCTS ─── */
+    .products {
+      padding: 6rem 5%;
+      background: var(--white);
+    }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 3vw, 2.4rem); font-weight: 800;
+      letter-spacing: -0.75px; margin-bottom: 0.75rem;
+    }
+    .section-sub { font-size: 1.05rem; color: var(--gray); max-width: 560px; }
+    .section-header { margin-bottom: 3.5rem; }
+    .products-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .product-card {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex; flex-direction: column;
+      text-decoration: none; color: inherit;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .product-card.primary { border-color: var(--teal); }
+    .product-accent {
+      height: 6px;
+      background: var(--border);
+    }
+    .product-card.primary .product-accent { background: linear-gradient(90deg, var(--teal), #6ee7da); }
+    .product-card.secondary1 .product-accent { background: linear-gradient(90deg, var(--coral), #f9a58a); }
+    .product-card.secondary2 .product-accent { background: linear-gradient(90deg, #6366f1, #a5b4fc); }
+    .product-inner { padding: 2rem; flex: 1; display: flex; flex-direction: column; }
+    .product-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1.25rem;
+    }
+    .product-card.primary .product-icon { background: var(--teal-light); }
+    .product-card.secondary1 .product-icon { background: var(--coral-light); }
+    .product-card.secondary2 .product-icon { background: #ede9fe; }
+    .product-tag {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .product-card.primary .product-tag { color: var(--teal); }
+    .product-card.secondary1 .product-tag { color: var(--coral); }
+    .product-card.secondary2 .product-tag { color: #6366f1; }
+    .product-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.5rem; line-height: 1.2; }
+    .product-card.primary h3 { font-size: 1.5rem; }
+    .product-card p { font-size: 0.875rem; color: var(--gray); line-height: 1.6; margin-bottom: 1.25rem; flex: 1; }
+    .product-rate {
+      background: var(--gray-light); border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem; margin-bottom: 1.25rem;
+    }
+    .product-rate .rate-num { font-size: 1.6rem; font-weight: 800; color: var(--teal); line-height: 1; }
+    .product-rate .rate-desc { font-size: 0.72rem; color: var(--gray); margin-top: 0.2rem; }
+    .product-cta {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.875rem; font-weight: 700;
+      text-decoration: none;
+      padding: 0.6rem 1.25rem; border-radius: var(--radius-sm);
+      transition: background 0.15s, gap 0.15s;
+    }
+    .product-card.primary .product-cta { background: var(--teal); color: var(--white); }
+    .product-card.primary .product-cta:hover { background: var(--teal-dark); }
+    .product-card.secondary1 .product-cta { background: var(--coral); color: var(--white); }
+    .product-card.secondary1 .product-cta:hover { background: #d94e28; }
+    .product-card.secondary2 .product-cta { background: #6366f1; color: var(--white); }
+    .product-card.secondary2 .product-cta:hover { background: #4f46e5; }
+    .product-cta:hover { gap: 0.65rem; }
+    .product-features { list-style: none; margin-bottom: 1.5rem; }
+    .product-features li {
+      font-size: 0.82rem; color: var(--gray);
+      padding: 0.3rem 0; display: flex; gap: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .product-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+
+    /* ─── TRUST / SOCIAL PROOF ─── */
+    .trust-section {
+      background: var(--navy);
+      padding: 4rem 5%;
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+    .trust-item .t-num {
+      font-size: 2.4rem; font-weight: 800;
+      color: #6ee7da; letter-spacing: -1px; line-height: 1;
+    }
+    .trust-item .t-label { font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-top: 0.35rem; }
+    .trust-divider { width: 1px; background: rgba(255,255,255,0.1); }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-section { padding: 6rem 5%; background: var(--gray-light); }
+    .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .how-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 1.75rem; position: relative;
+      border: 1.5px solid var(--border);
+    }
+    .how-card::after {
+      content: '→';
+      position: absolute; right: -1.15rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem; color: var(--teal); font-weight: 700;
+      z-index: 1;
+    }
+    .how-card:last-child::after { display: none; }
+    .how-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--teal-light); color: var(--teal);
+      font-weight: 800; font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .how-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .how-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials { padding: 6rem 5%; }
+    .testimonials-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .tcard {
+      background: var(--white); border-radius: var(--radius);
+      padding: 1.75rem; border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s;
+    }
+    .tcard:hover { box-shadow: var(--shadow); }
+    .tcard-stars { color: #f59e0b; font-size: 0.85rem; margin-bottom: 0.85rem; letter-spacing: 1px; }
+    .tcard-text { font-size: 0.9rem; color: var(--gray); font-style: italic; margin-bottom: 1.25rem; line-height: 1.65; }
+    .tcard-savings {
+      background: var(--teal-light); border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem; margin-bottom: 1.25rem;
+      font-size: 0.8rem; font-weight: 600; color: var(--teal);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .tcard-author { display: flex; align-items: center; gap: 0.75rem; }
+    .tcard-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--teal-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .tcard-name { font-size: 0.875rem; font-weight: 700; }
+    .tcard-meta { font-size: 0.75rem; color: var(--gray); }
+
+    /* ─── COMPARISON TABLE ─── */
+    .compare-section { padding: 6rem 5%; background: var(--gray-light); }
+    .compare-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .compare-table th, .compare-table td { padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+    .compare-table th { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); background: var(--gray-light); }
+    .compare-table th.earnest-col, .compare-table td.earnest-col { background: var(--teal-light); font-weight: 700; }
+    .compare-table th.earnest-col { color: var(--teal); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .check { color: var(--teal); font-weight: 700; }
+    .cross { color: #ef4444; }
+    .partial { color: #f59e0b; }
+    .compare-table td:first-child { font-weight: 600; }
+
+    /* ─── CTA BANNER ─── */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      padding: 6rem 5%; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%);
+    }
+    .cta-banner h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; color: var(--white); letter-spacing: -0.75px; margin-bottom: 1rem; position: relative; }
+    .cta-banner p { font-size: 1.1rem; color: rgba(255,255,255,0.75); margin-bottom: 2.5rem; position: relative; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+    .btn-white {
+      background: var(--white); color: var(--teal);
+      padding: 0.9rem 2.25rem; border-radius: var(--radius-sm);
+      font-size: 1rem; font-weight: 700; text-decoration: none;
+      transition: transform 0.1s, box-shadow 0.15s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .btn-white-outline {
+      background: transparent; color: var(--white);
+      border: 2px solid rgba(255,255,255,0.5);
+      padding: 0.9rem 2.25rem; border-radius: var(--radius-sm);
+      font-size: 1rem; font-weight: 600; text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-white-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+    .cta-fine { margin-top: 1.5rem; font-size: 0.75rem; color: rgba(255,255,255,0.45); position: relative; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,0.5);
+      padding: 4rem 5% 2.5rem; font-size: 0.82rem;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand .footer-logo img { height: 28px; width: auto; filter: brightness(0) invert(1); margin-bottom: 1rem; }
+    .footer-brand p { font-size: 0.82rem; line-height: 1.6; max-width: 260px; }
+    .footer-col h5 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8); margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul a { color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.15s; }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom {
+      padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: underline; }
+    .disclaimer { max-width: 700px; font-size: 0.72rem; opacity: 0.45; line-height: 1.6; }
+    .nmls { font-size: 0.72rem; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .fade-up { animation: fadeUp 0.5s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding: 5rem 5%; }
+      .rate-widget { max-width: 480px; }
+      .products-grid { grid-template-columns: 1fr 1fr; }
+      .product-card.primary { grid-column: span 2; }
+      .trust-grid { grid-template-columns: repeat(2, 1fr); }
+      .how-grid { grid-template-columns: repeat(2, 1fr); }
+      .how-card::after { display: none; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      nav .nav-links { display: none; }
+      .products-grid { grid-template-columns: 1fr; }
+      .product-card.primary { grid-column: span 1; }
+      .testimonials-track { grid-template-columns: 1fr; }
+      .compare-table { font-size: 0.78rem; }
+      .compare-table th, .compare-table td { padding: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo">
+    <img src="../marketing-landing-page/earnest-logo.svg" alt="Earnest" />
+  </div>
+  <div class="nav-links">
+    <a href="#" class="active">Student Loan Refi</a>
+    <a href="#">Personal Loans</a>
+    <a href="#">Pet Loans</a>
+    <a href="#">Resources</a>
+    <a href="#">About</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="btn-ghost">Sign in</a>
+    <a href="#rate-check" class="btn-nav">Check my rate</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="rate-check">
+  <div class="hero-text fade-up">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      Rates updated daily
+    </div>
+    <h1>Refinance your<br>student loans.<br><span class="hl">Save thousands.</span></h1>
+    <p class="hero-sub">Lower your rate, reduce your monthly payment, and get out of debt faster — without losing federal protections on private loans. Check your rate in 2 minutes with no credit impact.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number">$22,847</div>
+        <div class="label">Average savings per borrower</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">4.8★</div>
+        <div class="label">Based on 14,200+ reviews</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">2 min</div>
+        <div class="label">To see your rate, no hard pull</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rate-widget fade-up delay-2" id="widget">
+    <div class="widget-header">
+      <h3>Check Your Rate</h3>
+      <span class="widget-badge">No credit impact</span>
+    </div>
+    <div class="widget-steps" id="widget-steps">
+      <div class="widget-step active" data-step="1">
+        <div class="step-num"><span>1</span></div>
+        <div class="step-label">Your loans</div>
+      </div>
+      <div class="widget-step" data-step="2">
+        <div class="step-num"><span>2</span></div>
+        <div class="step-label">Your info</div>
+      </div>
+      <div class="widget-step" data-step="3">
+        <div class="step-num"><span>3</span></div>
+        <div class="step-label">Education</div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="widget-body">
+      <div class="widget-panel active" id="step1">
+        <div class="form-group">
+          <label class="form-label">What type of loans are you refinancing?</label>
+          <div class="select-wrap">
+            <select class="form-select" id="loanType">
+              <option value="">Select loan type</option>
+              <option value="federal">Federal loans only</option>
+              <option value="private">Private loans only</option>
+              <option value="both">Both federal & private</option>
+            </select>
+          </div>
+          <div class="form-error" id="loanTypeError">Please select a loan type</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Current loan balance</label>
+          <div class="range-wrap">
+            <div class="range-labels">
+              <span>$5,000</span>
+              <span class="range-val" id="balanceLabel">$50,000</span>
+              <span>$250,000</span>
+            </div>
+            <input type="range" id="balanceRange" min="5000" max="250000" step="1000" value="50000" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Current interest rate</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">%</span>
+            <input type="number" class="form-input" id="currentRate" placeholder="e.g. 7.5" min="1" max="20" step="0.1" />
+          </div>
+          <div class="form-error" id="currentRateError">Please enter your current interest rate</div>
+        </div>
+        <button class="btn-full" onclick="nextStep(1)">Continue →</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="widget-panel" id="step2">
+        <div class="form-group">
+          <label class="form-label">Annual income (before taxes)</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">$</span>
+            <input type="number" class="form-input" id="income" placeholder="e.g. 75,000" />
+          </div>
+          <div class="form-error" id="incomeError">Please enter your income</div>
+        </div>
+        <div class="row-2">
+          <div class="form-group">
+            <label class="form-label">Employment status</label>
+            <div class="select-wrap">
+              <select class="form-select" id="employment">
+                <option value="">Select</option>
+                <option value="employed">Employed</option>
+                <option value="self">Self-employed</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-error" id="employmentError">Required</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Credit score range</label>
+            <div class="select-wrap">
+              <select class="form-select" id="credit">
+                <option value="">Select</option>
+                <option value="excellent">760+ (Excellent)</option>
+                <option value="good">720–759 (Great)</option>
+                <option value="fair">680–719 (Good)</option>
+                <option value="lower">Below 680</option>
+              </select>
+            </div>
+            <div class="form-error" id="creditError">Required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Desired loan term</label>
+          <div class="select-wrap">
+            <select class="form-select" id="term">
+              <option value="">Select term</option>
+              <option value="5">5 years</option>
+              <option value="7">7 years</option>
+              <option value="10">10 years</option>
+              <option value="15">15 years</option>
+              <option value="20">20 years</option>
+            </select>
+          </div>
+          <div class="form-error" id="termError">Please select a term</div>
+        </div>
+        <button class="btn-full" onclick="nextStep(2)">See my rate estimate →</button>
+        <div style="text-align:center; margin-top:0.75rem;">
+          <button onclick="prevStep(2)" style="background:none;border:none;color:var(--gray);font-size:0.8rem;cursor:pointer;">← Back</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="widget-panel" id="step3">
+        <div class="form-group">
+          <label class="form-label">Highest degree earned</label>
+          <div class="select-wrap">
+            <select class="form-select" id="degree">
+              <option value="">Select degree</option>
+              <option value="associate">Associate's</option>
+              <option value="bachelor">Bachelor's</option>
+              <option value="master">Master's</option>
+              <option value="doctoral">Doctoral / Professional</option>
+            </select>
+          </div>
+          <div class="form-error" id="degreeError">Please select your degree</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Graduation status</label>
+          <div class="select-wrap">
+            <select class="form-select" id="gradStatus">
+              <option value="">Select</option>
+              <option value="graduated">Graduated</option>
+              <option value="enrolled">Currently enrolled</option>
+              <option value="leaving">Leaving school</option>
+            </select>
+          </div>
+          <div class="form-error" id="gradStatusError">Required</div>
+        </div>
+        <button class="btn-full" id="calcBtn" onclick="showResults()">Calculate my savings →</button>
+        <div style="text-align:center; margin-top:0.75rem;">
+          <button onclick="prevStep(3)" style="background:none;border:none;color:var(--gray);font-size:0.8rem;cursor:pointer;">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-panel" id="results">
+      <div class="results-header">
+        <div class="big-rate" id="resultRate">—</div>
+        <div class="big-rate-label">Estimated APR (variable)</div>
+      </div>
+      <div class="savings-callout">
+        <div class="s-amount" id="resultSavings">—</div>
+        <div class="s-label">Estimated total savings over loan term</div>
+      </div>
+      <div class="results-breakdown">
+        <div class="results-row">
+          <span class="r-label">Monthly payment (current est.)</span>
+          <span class="r-val" id="rCurrentPayment">—</span>
+        </div>
+        <div class="results-row">
+          <span class="r-label">Monthly payment (with Earnest)</span>
+          <span class="r-val savings" id="rNewPayment">—</span>
+        </div>
+        <div class="results-row">
+          <span class="r-label">Monthly savings</span>
+          <span class="r-val savings" id="rMonthlySavings">—</span>
+        </div>
+        <div class="results-row">
+          <span class="r-label">New loan term</span>
+          <span class="r-val" id="rTerm">—</span>
+        </div>
+      </div>
+      <p class="results-disclaimer">Estimates are illustrative. Actual rate depends on creditworthiness and application details. Soft credit check only — no impact to your score.</p>
+      <button class="btn-full-coral" onclick="window.location='#'">Lock in my rate — Apply now</button>
+      <button class="btn-outline" onclick="resetWidget()">Recalculate</button>
+    </div>
+
+    <div class="widget-trust">
+      <svg viewBox="0 0 24 24"><path d="M12 1l3.09 6.26L22 8.27l-5 4.87 1.18 6.88L12 16.77l-6.18 3.25L7 13.14 2 8.27l6.91-1.01L12 1z"/></svg>
+      No hard credit pull &nbsp;·&nbsp; 256-bit encryption &nbsp;·&nbsp; 4.8/5 rating
+    </div>
+  </div>
+</section>
+
+<!-- ─── TRUST ─── -->
+<div class="trust-section">
+  <div class="trust-grid">
+    <div class="trust-item">
+      <div class="t-num">$22,847</div>
+      <div class="t-label">Average borrower savings</div>
+    </div>
+    <div class="trust-item">
+      <div class="t-num">$12B+</div>
+      <div class="t-label">In student loans refinanced</div>
+    </div>
+    <div class="trust-item">
+      <div class="t-num">180K+</div>
+      <div class="t-label">Borrowers served</div>
+    </div>
+    <div class="trust-item">
+      <div class="t-num">4.8★</div>
+      <div class="t-label">Average review score</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PRODUCTS ─── -->
+<section class="products" id="products">
+  <div class="section-header">
+    <p class="section-label">Our products</p>
+    <h2 class="section-title">More than student loans.</h2>
+    <p class="section-sub">From refinancing to personal loans, Earnest helps you move money smarter at every stage of life.</p>
+  </div>
+  <div class="products-grid">
+
+    <!-- Primary: Student Loan Refi -->
+    <a href="#rate-check" class="product-card primary">
+      <div class="product-accent"></div>
+      <div class="product-inner">
+        <div class="product-icon">🎓</div>
+        <div class="product-tag">★ Most Popular</div>
+        <h3>Student Loan Refinancing</h3>
+        <p>Replace your high-rate federal or private student loans with a single new loan at a lower rate. Customize your monthly payment to the exact dollar with our unique precision pricing.</p>
+        <div class="product-rate">
+          <div class="rate-num">From 4.99% APR</div>
+          <div class="rate-desc">Variable rate · Based on creditworthiness · No origination fee</div>
+        </div>
+        <ul class="product-features">
+          <li>Precision Pricing — set your exact monthly payment</li>
+          <li>No origination or prepayment fees, ever</li>
+          <li>9-month forbearance — most in the industry</li>
+          <li>Rate match guarantee</li>
+          <li>$0 to apply, results in 2 minutes</li>
+        </ul>
+        <span class="product-cta">Check my rate →</span>
+      </div>
+    </a>
+
+    <!-- Personal Loans -->
+    <a href="#" class="product-card secondary1">
+      <div class="product-accent"></div>
+      <div class="product-inner">
+        <div class="product-icon">💳</div>
+        <div class="product-tag">Personal Loans</div>
+        <h3>Personal Loans</h3>
+        <p>From debt consolidation to home improvement, get flexible financing with no origination fees and same-day funding available.</p>
+        <div class="product-rate">
+          <div class="rate-num" style="color:var(--coral)">From 6.99% APR</div>
+          <div class="rate-desc">$1K–$75K · 12–84 months · No fees</div>
+        </div>
+        <ul class="product-features">
+          <li>$1,000 – $75,000 loan amounts</li>
+          <li>Same-day funding available</li>
+          <li>AutoPay discount</li>
+        </ul>
+        <span class="product-cta">Check my rate →</span>
+      </div>
+    </a>
+
+    <!-- Pet Loans -->
+    <a href="../marketing-landing-page/" class="product-card secondary2">
+      <div class="product-accent"></div>
+      <div class="product-inner">
+        <div class="product-icon">🐾</div>
+        <div class="product-tag">Pet Loans</div>
+        <h3>Pet Loans</h3>
+        <p>Cover any veterinary expense — from emergency surgery to routine wellness — with a personal loan built for pet parents.</p>
+        <div class="product-rate">
+          <div class="rate-num" style="color:#6366f1">From 6.99% APR</div>
+          <div class="rate-desc">$1K–$50K · No vet invoices required</div>
+        </div>
+        <ul class="product-features">
+          <li>No restrictions on use</li>
+          <li>No origination fee</li>
+          <li>Funds in as little as 1 day</li>
+        </ul>
+        <span class="product-cta">Learn more →</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="how-section">
+  <div class="section-header">
+    <p class="section-label">The process</p>
+    <h2 class="section-title">From application to lower payment in 4 steps.</h2>
+    <p class="section-sub">We built the fastest, most transparent refinancing process in the industry.</p>
+  </div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">1</div>
+      <h4>Check your rate</h4>
+      <p>Fill out our 2-minute form. Soft credit check only — zero impact to your score.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">2</div>
+      <h4>Customize your loan</h4>
+      <p>Use Precision Pricing to set your exact monthly payment. Choose a fixed or variable rate.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">3</div>
+      <h4>Submit your application</h4>
+      <p>Upload documents digitally. Our team reviews and approves — usually within 1 business day.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">4</div>
+      <h4>We pay off your old loans</h4>
+      <p>Earnest sends payoff directly to your loan servicers. One new loan, one lower payment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section class="testimonials">
+  <div class="section-header">
+    <p class="section-label">Borrower stories</p>
+    <h2 class="section-title">Real savings. Real people.</h2>
+  </div>
+  <div class="testimonials-track">
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-text">"I had $87K in student loans at 7.8%. Earnest got me down to 4.9% in under a week. The Precision Pricing feature let me set a payment I could actually afford. Wish I'd done this years ago."</p>
+      <div class="tcard-savings">💰 Saving $312/month · $22,464 total</div>
+      <div class="tcard-author">
+        <div class="tcard-avatar">👩‍⚕️</div>
+        <div>
+          <div class="tcard-name">Maya R.</div>
+          <div class="tcard-meta">Nurse Practitioner · Refinanced $87,000</div>
+        </div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-text">"I compared six lenders. Earnest had the best rate AND no fees. The application was entirely online and my loans were paid off within 2 weeks. The process was shockingly easy."</p>
+      <div class="tcard-savings">💰 Saving $198/month · $14,256 total</div>
+      <div class="tcard-author">
+        <div class="tcard-avatar">👨‍💻</div>
+        <div>
+          <div class="tcard-name">Daniel K.</div>
+          <div class="tcard-meta">Software Engineer · Refinanced $62,000</div>
+        </div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-text">"As a first-gen college grad with $120K in loans, I was terrified. Earnest's team walked me through every step. I'm now saving over $400/month. It changed my financial life."</p>
+      <div class="tcard-savings">💰 Saving $407/month · $48,840 total</div>
+      <div class="tcard-author">
+        <div class="tcard-avatar">👩‍🏫</div>
+        <div>
+          <div class="tcard-name">Jasmine T.</div>
+          <div class="tcard-meta">Teacher · Refinanced $120,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── COMPARISON ─── -->
+<section class="compare-section">
+  <div class="section-header">
+    <p class="section-label">Why Earnest</p>
+    <h2 class="section-title">See how we compare.</h2>
+    <p class="section-sub">We think the numbers speak for themselves.</p>
+  </div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th class="earnest-col">Earnest</th>
+        <th>SoFi</th>
+        <th>Credible</th>
+        <th>LendingTree</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Origination fee</td>
+        <td class="earnest-col check">None</td>
+        <td class="check">None</td>
+        <td class="partial">Varies</td>
+        <td class="partial">Varies</td>
+      </tr>
+      <tr>
+        <td>Precision Pricing (custom payment)</td>
+        <td class="earnest-col check">✓ Yes</td>
+        <td class="cross">✗ No</td>
+        <td class="cross">✗ No</td>
+        <td class="cross">✗ No</td>
+      </tr>
+      <tr>
+        <td>Forbearance months</td>
+        <td class="earnest-col check">9 months</td>
+        <td>3 months</td>
+        <td>Varies</td>
+        <td>Varies</td>
+      </tr>
+      <tr>
+        <td>Rate match guarantee</td>
+        <td class="earnest-col check">✓ Yes</td>
+        <td class="cross">✗ No</td>
+        <td class="cross">✗ No</td>
+        <td class="cross">✗ No</td>
+      </tr>
+      <tr>
+        <td>Hard credit pull to check rate</td>
+        <td class="earnest-col check">✗ No (soft only)</td>
+        <td class="check">✗ No</td>
+        <td class="cross">✓ Yes</td>
+        <td class="cross">✓ Yes</td>
+      </tr>
+      <tr>
+        <td>Minimum loan balance</td>
+        <td class="earnest-col check">$5,000</td>
+        <td>$5,000</td>
+        <td>$5,000</td>
+        <td>$1,000</td>
+      </tr>
+      <tr>
+        <td>Variable + fixed rate options</td>
+        <td class="earnest-col check">✓ Both</td>
+        <td class="check">✓ Both</td>
+        <td class="check">✓ Both</td>
+        <td class="check">✓ Both</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ─── CTA BANNER ─── -->
+<section class="cta-banner">
+  <h2>Ready to save thousands on your student loans?</h2>
+  <p>It takes 2 minutes and won't affect your credit score.</p>
+  <div class="cta-actions">
+    <a href="#rate-check" class="btn-white">Check my rate — it's free</a>
+    <a href="#products" class="btn-white-outline">Explore all products</a>
+  </div>
+  <p class="cta-fine">No hard credit pull &nbsp;·&nbsp; Rates updated daily &nbsp;·&nbsp; NMLS #1204917</p>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="../marketing-landing-page/earnest-logo.svg" alt="Earnest" /></div>
+      <p>Earnest helps people build a better financial future by offering smarter personal finance products with simple, transparent terms.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Products</h5>
+      <ul>
+        <li><a href="#">Student Loan Refi</a></li>
+        <li><a href="#">Personal Loans</a></li>
+        <li><a href="#">Pet Loans</a></li>
+        <li><a href="#">Rates</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="#">Student Loan Calculator</a></li>
+        <li><a href="#">Refinancing Guide</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Earnest</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="nmls">Earnest Operations LLC, NMLS #1204917</div>
+    <div style="display:flex; gap:1.25rem; flex-wrap:wrap;">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Licenses</a>
+      <a href="#">Accessibility</a>
+    </div>
+  </div>
+  <p class="disclaimer" style="margin-top:1.5rem;">
+    This page is a prototype for internal testing purposes only and does not constitute a loan offer. APR ranges are illustrative. Actual rates depend on creditworthiness, loan amount, and term. Not available in all states. Refinancing federal loans may cause loss of certain federal benefits including income-driven repayment plans and loan forgiveness programs.
+  </p>
+</footer>
+
+<script>
+  // ── Range slider ──
+  const range = document.getElementById('balanceRange');
+  const balLabel = document.getElementById('balanceLabel');
+  function updateRange() {
+    const v = parseInt(range.value);
+    balLabel.textContent = '$' + v.toLocaleString();
+    const pct = ((v - 5000) / (250000 - 5000)) * 100;
+    range.style.background = `linear-gradient(to right, var(--teal) ${pct}%, var(--teal) ${pct}%, var(--border) ${pct}%, var(--border) 100%)`;
+  }
+  range.addEventListener('input', updateRange);
+  updateRange();
+
+  // ── Step navigation ──
+  function getStepEls(n) {
+    return {
+      panel: document.getElementById('step' + n),
+      navStep: document.querySelector('[data-step="' + n + '"]')
+    };
+  }
+
+  function nextStep(from) {
+    if (!validateStep(from)) return;
+    const { panel: cur, navStep: curNav } = getStepEls(from);
+    const { panel: nxt, navStep: nxtNav } = getStepEls(from + 1);
+    cur.classList.remove('active');
+    nxt.classList.add('active');
+    curNav.classList.remove('active');
+    curNav.classList.add('done');
+    nxtNav.classList.add('active');
+  }
+
+  function prevStep(from) {
+    const { panel: cur, navStep: curNav } = getStepEls(from);
+    const { panel: prev, navStep: prevNav } = getStepEls(from - 1);
+    cur.classList.remove('active');
+    prev.classList.add('active');
+    curNav.classList.remove('active');
+    prevNav.classList.remove('done');
+    prevNav.classList.add('active');
+  }
+
+  function validateStep(step) {
+    let ok = true;
+    if (step === 1) {
+      const lt = document.getElementById('loanType');
+      const cr = document.getElementById('currentRate');
+      const ltErr = document.getElementById('loanTypeError');
+      const crErr = document.getElementById('currentRateError');
+      ltErr.classList.remove('show'); crErr.classList.remove('show');
+      if (!lt.value) { ltErr.classList.add('show'); lt.classList.add('error'); ok = false; } else lt.classList.remove('error');
+      if (!cr.value || cr.value < 0.1) { crErr.classList.add('show'); cr.classList.add('error'); ok = false; } else cr.classList.remove('error');
+    }
+    if (step === 2) {
+      const inc = document.getElementById('income');
+      const emp = document.getElementById('employment');
+      const crd = document.getElementById('credit');
+      const trm = document.getElementById('term');
+      [['income','incomeError'], ['employment','employmentError'], ['credit','creditError'], ['term','termError']].forEach(([id, eid]) => {
+        const el = document.getElementById(id);
+        const er = document.getElementById(eid);
+        er.classList.remove('show'); el.classList.remove('error');
+        if (!el.value) { er.classList.add('show'); el.classList.add('error'); ok = false; }
+      });
+    }
+    if (step === 3) {
+      [['degree','degreeError'], ['gradStatus','gradStatusError']].forEach(([id, eid]) => {
+        const el = document.getElementById(id);
+        const er = document.getElementById(eid);
+        er.classList.remove('show'); el.classList.remove('error');
+        if (!el.value) { er.classList.add('show'); el.classList.add('error'); ok = false; }
+      });
+    }
+    return ok;
+  }
+
+  // ── Calculate results ──
+  function showResults() {
+    if (!validateStep(3)) return;
+    const balance = parseInt(document.getElementById('balanceRange').value);
+    const currentRate = parseFloat(document.getElementById('currentRate').value);
+    const credit = document.getElementById('credit').value;
+    const termYears = parseInt(document.getElementById('term').value);
+
+    // Estimate new rate based on credit score bucket
+    const rateMap = { excellent: 4.99, good: 5.99, fair: 7.49, lower: 9.99 };
+    const newRate = rateMap[credit] || 6.49;
+
+    function monthlyPayment(principal, annualRate, years) {
+      const r = annualRate / 100 / 12;
+      const n = years * 12;
+      return principal * (r * Math.pow(1+r,n)) / (Math.pow(1+r,n) - 1);
+    }
+
+    // Assume current term is 10 years if unknown
+    const curPmt = monthlyPayment(balance, currentRate, 10);
+    const newPmt = monthlyPayment(balance, newRate, termYears);
+    const monthlySavings = curPmt - newPmt;
+    const totalSavings = monthlySavings * termYears * 12;
+
+    document.getElementById('resultRate').textContent = newRate.toFixed(2) + '%';
+    document.getElementById('rCurrentPayment').textContent = '$' + Math.round(curPmt).toLocaleString() + '/mo';
+    document.getElementById('rNewPayment').textContent = '$' + Math.round(newPmt).toLocaleString() + '/mo';
+    document.getElementById('rMonthlySavings').textContent = (monthlySavings > 0 ? '-' : '+') + '$' + Math.abs(Math.round(monthlySavings)).toLocaleString() + '/mo';
+    document.getElementById('rTerm').textContent = termYears + ' years';
+    document.getElementById('resultSavings').textContent = (totalSavings > 0 ? 'Save $' : 'Pay $') + Math.abs(Math.round(totalSavings)).toLocaleString();
+
+    // Hide form steps, show results
+    document.getElementById('step3').classList.remove('active');
+    document.querySelector('[data-step="3"]').classList.remove('active');
+    document.querySelector('[data-step="3"]').classList.add('done');
+    document.querySelector('.widget-body').style.display = 'none';
+    document.querySelector('.widget-steps').style.display = 'none';
+    document.getElementById('results').classList.add('show');
+  }
+
+  function resetWidget() {
+    // Reset all fields
+    ['loanType','currentRate','income','employment','credit','term','degree','gradStatus'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('balanceRange').value = 50000;
+    updateRange();
+    // Reset steps UI
+    document.querySelectorAll('.widget-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.widget-step').forEach(s => { s.classList.remove('active','done'); });
+    document.getElementById('step1').classList.add('active');
+    document.querySelector('[data-step="1"]').classList.add('active');
+    document.querySelector('.widget-body').style.display = '';
+    document.querySelector('.widget-steps').style.display = '';
+    document.getElementById('results').classList.remove('show');
+  }
+
+  // ── Smooth scroll for nav CTA ──
+  document.querySelectorAll('a[href="#rate-check"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('rate-check').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
